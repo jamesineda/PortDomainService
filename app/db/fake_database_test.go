@@ -92,6 +92,6 @@ func (suite *FakeDatabaseTestSuite) TestFakeDatabase_Delete() {
 	suite.Equal(nil, suite.FakeDatabase.Get("AEAJM", "port"))
 }
 
-func TestExampleTestSuite(t *testing.T) {
+func TestFakeDatabaseTestSuite(t *testing.T) {
 	suite.Run(t, new(FakeDatabaseTestSuite))
 }
