@@ -59,7 +59,9 @@ func main() {
 		case <-finishedChannel:
 			log.Printf("Processed %d port objects", processCount)
 			log.Println("Shutting down service")
-			time.Sleep(10 * time.Second)
+
+			// for simulation purposes
+			time.Sleep(3 * time.Second)
 			return
 		}
 	}

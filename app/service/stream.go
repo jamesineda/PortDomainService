@@ -2,11 +2,11 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/jamesineda/PortDomainService/app/db"
 	"github.com/jamesineda/PortDomainService/app/models"
 	"log"
 	"os"
+	"time"
 )
 
 type Service struct {
@@ -42,7 +42,6 @@ func (s *Service) Start(filepath string, stopChannel <-chan bool, finishedChanne
 }
 
 func (s *Service) DecodePortStream(file *os.File, stop <-chan bool, finish, count chan<- bool) error {
-	fmt.Println("Starting decode stream")
 	decoder := json.NewDecoder(file)
 	i := 0
 
@@ -53,6 +52,7 @@ func (s *Service) DecodePortStream(file *os.File, stop <-chan bool, finish, coun
 
 	ports := make([]*models.Port, 0)
 
+	log.Println("Reading port stream and processing data (this may take a while)")
 	for decoder.More() {
 		select {
 		case <-stop:
@@ -104,5 +104,8 @@ func (s *Service) CreateOrUpdatePort(port *models.Port) error {
 			return err
 		}
 	}
+
+	// for simulation purposes, as this runs incredibly quickly
+	time.Sleep(15 * time.Millisecond)
 	return nil
 }

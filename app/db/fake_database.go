@@ -19,6 +19,8 @@ var ErrRecordAlreadyExists error = fmt.Errorf("record already exists")
 type FakeDatabase struct {
 	// represents a map of tables
 	database map[string]map[string]interface{}
+
+	// required if the service was to include additional go routines for data processing.
 	sync.Mutex
 }
 
@@ -27,6 +29,12 @@ func NewFakeDatabase() *FakeDatabase {
 	portsTable := make(map[string]interface{}, 0)
 	database := map[string]map[string]interface{}{"port": portsTable}
 	return &FakeDatabase{database: database}
+}
+
+func (fdb *FakeDatabase) Count(tableName string) int {
+	defer fdb.Unlock()
+	fdb.Lock()
+	return len(fdb.database[tableName])
 }
 
 func (fdb *FakeDatabase) Get(id string, tableName string) interface{} {

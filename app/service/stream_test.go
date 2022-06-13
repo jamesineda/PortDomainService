@@ -75,6 +75,8 @@ func (suite *StreamServiceTestSuite) SetupTest() {
 	suite.FakeDatabase = db.NewFakeDatabase()
 }
 
+// AEAJM is created and then updated to the most recent version from the test data above
+// AEJEA is created
 func (suite *StreamServiceTestSuite) TestService_CreateOrUpdatePort() {
 	service := NewService(suite.FakeDatabase)
 
@@ -82,8 +84,9 @@ func (suite *StreamServiceTestSuite) TestService_CreateOrUpdatePort() {
 		suite.Equal(nil, service.CreateOrUpdatePort(port))
 	}
 
-	suite.Equal(suite.FakeDatabase.Get("AEAJM", "port"), suite.UpdatedAjmanPort)
-	suite.Equal(suite.FakeDatabase.Get("AEJEA", "port"), suite.JebelPort)
+	suite.Equal(suite.UpdatedAjmanPort, suite.FakeDatabase.Get("AEAJM", "port"))
+	suite.Equal(suite.JebelPort, suite.FakeDatabase.Get("AEJEA", "port"))
+	suite.Equal(2, suite.FakeDatabase.Count("port"))
 }
 
 func TestStreamServiceTestSuite(t *testing.T) {
